@@ -18,11 +18,17 @@ public enum States // used by all logic
 
 public class PlayerScript : MonoBehaviour
 {
+
+    [SerializeField]
+    private HealthBarUI healthBar;
+
     States state;
 
     public Animator anim;
     Rigidbody rb;
     public bool grounded;
+    public float maxHealth;
+    public float health;
 
     public float waiting = 3f;
     public bool deathCooldown = true;
@@ -39,6 +45,8 @@ public class PlayerScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
+
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     #endregion
@@ -48,6 +56,11 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         DoLogic();
+
+        if (health == 0)
+        {
+            SceneManager.LoadScene("Scene1");
+        }
     }
 
     #endregion
@@ -91,18 +104,10 @@ public class PlayerScript : MonoBehaviour
         {
             // simulate jump
             state = States.Jump;
-            rb.linearVelocity = new Vector3(0, 4.5f, 0);
+            rb.linearVelocity = new Vector3(0, 5f, 0);
         }
 
-        if (moveAction.IsPressed())
-        {
-            transform.Rotate(0, 0.5f, 0, Space.Self);
-
-        }
-        if (moveAction.IsPressed())
-        {
-            transform.Rotate(0, -0.5f, 0, Space.Self);
-        }
+      
 
         if (moveAction.IsPressed())
         {
@@ -130,11 +135,11 @@ public class PlayerScript : MonoBehaviour
 
         if (moveAction.IsPressed())
         {
-            vel = transform.forward * 3.65f;
+            vel = transform.forward * 4f;
         }
         else
         {
-            vel = transform.forward * 0.5f;
+            vel = transform.forward * 0f;
         }
 
        
@@ -163,17 +168,17 @@ public class PlayerScript : MonoBehaviour
 
         if (moveAction.IsPressed())
         {
-            vel = transform.forward * 3.65f;
+            vel = transform.forward * 4f;
         }
         else
         {
-            vel = transform.forward * 0.5f;
+            vel = transform.forward * 0f;
         }
 
         if (jumpAction.IsPressed())
         {
             state = States.Jump;
-            rb.linearVelocity = new Vector3(0, 4.5f, 0);
+            rb.linearVelocity = new Vector3(0, 5f, 0);
         }
 
         rb.linearVelocity = new Vector3(vel.x, rb.linearVelocity.y, vel.z);
@@ -196,6 +201,16 @@ public class PlayerScript : MonoBehaviour
             grounded = true;
             print("landed!");
         }
+
+        if (col.gameObject.tag == "Danger")
+        {
+            health = health - 20;
+            health = Mathf.Clamp(health, 0, maxHealth);
+
+            healthBar.SetHealth(health);
+        }
+
+     
     }
 
 
