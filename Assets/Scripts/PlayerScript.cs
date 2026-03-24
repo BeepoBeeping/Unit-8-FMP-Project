@@ -35,6 +35,10 @@ public class PlayerScript : MonoBehaviour
     public bool falling;
     InputAction moveAction;
     InputAction jumpAction;
+    InputAction stompAction;
+    InputAction tauntAction;
+    InputAction menuAction;
+    InputAction dodgeAction;
 
     #region Start
 
@@ -45,6 +49,10 @@ public class PlayerScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
+        stompAction = InputSystem.actions.FindAction("Stomp");
+        tauntAction = InputSystem.actions.FindAction("Taunt");
+        menuAction = InputSystem.actions.FindAction("Menu");
+        dodgeAction = InputSystem.actions.FindAction("Dodge");
 
         healthBar.SetMaxHealth(maxHealth);
     }
@@ -202,7 +210,7 @@ public class PlayerScript : MonoBehaviour
             print("landed!");
         }
 
-        if (col.gameObject.tag == "Danger")
+        if (col.gameObject.tag == "Danger" || col.gameObject.tag == "Enemy")
         {
             health = health - 20;
             health = Mathf.Clamp(health, 0, maxHealth);
