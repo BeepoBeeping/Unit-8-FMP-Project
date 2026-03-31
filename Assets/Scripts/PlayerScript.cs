@@ -63,7 +63,6 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DoLogic();
 
         if (health == 0)
         {
@@ -76,6 +75,9 @@ public class PlayerScript : MonoBehaviour
     #region Late Update
     private void LateUpdate()
     {
+        DoLogic();
+
+
         grounded = false;
     }
 
@@ -107,6 +109,8 @@ public class PlayerScript : MonoBehaviour
     #region Player Idle
     void PlayerIdle()
     {
+        anim.SetBool("isIdle", true);
+        anim.SetBool("isWalk", false);
 
         if (jumpAction.IsPressed())
         {
@@ -176,6 +180,9 @@ public class PlayerScript : MonoBehaviour
 
         if (moveAction.IsPressed())
         {
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isWalk", true);
+
             vel = transform.forward * 4f;
         }
         else
