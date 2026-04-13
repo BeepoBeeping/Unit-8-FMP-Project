@@ -68,6 +68,11 @@ public class PlayerScript : MonoBehaviour
         {
             SceneManager.LoadScene("Scene1");
         }
+
+        if (stompAction.IsPressed())
+        {
+            rb.linearVelocity = new Vector3(0, -3f, 0);
+        }
     }
 
     #endregion
@@ -111,12 +116,15 @@ public class PlayerScript : MonoBehaviour
     {
         anim.SetBool("isIdle", true);
         anim.SetBool("isWalk", false);
+        anim.SetBool("isJump", false);
+        anim.SetBool("movingJump", false);
 
         if (jumpAction.IsPressed())
         {
             // simulate jump
+            anim.SetBool("isJump", true);
             state = States.Jump;
-            rb.linearVelocity = new Vector3(0, 5f, 0);
+            rb.linearVelocity = new Vector3(0, 4f, 0);
         }
 
       
@@ -133,6 +141,8 @@ public class PlayerScript : MonoBehaviour
     #region Player Jump
     void PlayerJumping()
     {
+        anim.SetBool("isIdle", false);
+        anim.SetBool("isWalk", false);
         Vector3 vel;
 
         // player is jumping, check for hitting the ground
@@ -147,7 +157,7 @@ public class PlayerScript : MonoBehaviour
 
         if (moveAction.IsPressed())
         {
-            vel = transform.forward * 4f;
+            vel = transform.forward * 5f;
         }
         else
         {
@@ -183,7 +193,7 @@ public class PlayerScript : MonoBehaviour
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", true);
 
-            vel = transform.forward * 4f;
+            vel = transform.forward * 5f;
         }
         else
         {
@@ -192,9 +202,12 @@ public class PlayerScript : MonoBehaviour
 
         if (jumpAction.IsPressed())
         {
+            anim.SetBool("movingJump", true);
             state = States.Jump;
-            rb.linearVelocity = new Vector3(0, 5f, 0);
+            rb.linearVelocity = new Vector3(0, 4.5f, 0);
         }
+
+      
 
         rb.linearVelocity = new Vector3(vel.x, rb.linearVelocity.y, vel.z);
 
@@ -206,6 +219,8 @@ public class PlayerScript : MonoBehaviour
     }
 
     #endregion
+
+   
 
     #region Collision
 
