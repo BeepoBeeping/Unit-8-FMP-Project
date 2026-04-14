@@ -2846,6 +2846,7 @@ GameObject:
   - component: {fileID: 3009940176394250799}
   - component: {fileID: 3009940176394250798}
   - component: {fileID: 3009940176394250803}
+  - component: {fileID: 3009940176394250804}
   - component: {fileID: 3009940176394250802}
   - component: {fileID: 3009940176394250801}
   - component: {fileID: 3009940176394250800}
@@ -2982,14 +2983,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffabacdf3e012e439c1098bea352798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
-  healthBar: {fileID: 1845107108}
   anim: {fileID: 3009940176394250798}
   grounded: 0
-  maxHealth: 100
-  health: 100
   waiting: 3
   deathCooldown: 1
   falling: 0
+--- !u!114 &3009940176394250804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3009940176394250796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb7d2a5e4b1c7440aefaff87d4dfa23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  healthBar: {fileID: 1845107108}
+  maxHealth: 100
+  damage:
+    baseValue: 20
 --- !u!4 &3009940176465312434
 Transform:
   m_ObjectHideFlags: 0

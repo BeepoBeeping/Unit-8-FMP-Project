@@ -19,26 +19,25 @@ public enum States // used by all logic
 public class PlayerScript : MonoBehaviour
 {
 
-    [SerializeField]
-    private HealthBarUI healthBar;
 
     States state;
 
     public Animator anim;
     Rigidbody rb;
     public bool grounded;
-    public float maxHealth;
-    public float health;
 
     public float waiting = 3f;
     public bool deathCooldown = true;
     public bool falling;
+    CharacterStats characterStats;
+    CharacterCombat combat;
     InputAction moveAction;
     InputAction jumpAction;
     InputAction stompAction;
     InputAction tauntAction;
     InputAction menuAction;
     InputAction dodgeAction;
+    InputAction attackAction;
 
     #region Start
 
@@ -53,8 +52,8 @@ public class PlayerScript : MonoBehaviour
         tauntAction = InputSystem.actions.FindAction("Taunt");
         menuAction = InputSystem.actions.FindAction("Menu");
         dodgeAction = InputSystem.actions.FindAction("Dodge");
+        attackAction = InputSystem.actions.FindAction("Attack");
 
-        healthBar.SetMaxHealth(maxHealth);
     }
 
     #endregion
@@ -63,10 +62,9 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (health == 0)
+        if (attackAction.IsPressed())
         {
-            SceneManager.LoadScene("Scene1");
+            combat.Attack();
         }
 
         if (stompAction.IsPressed())
@@ -230,17 +228,7 @@ public class PlayerScript : MonoBehaviour
         {
             grounded = true;
             print("landed!");
-        }
-
-        if (col.gameObject.tag == "Danger" || col.gameObject.tag == "Enemy")
-        {
-            health = health - 20;
-            health = Mathf.Clamp(health, 0, maxHealth);
-
-            healthBar.SetHealth(health);
-        }
-
-     
+        }    
     }
 
 
