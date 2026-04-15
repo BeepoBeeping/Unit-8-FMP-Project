@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] float health = 3;
+    [SerializeField] float health = 90;
 
     [Header("Combat")]
     [SerializeField] float attackCD = 3f;

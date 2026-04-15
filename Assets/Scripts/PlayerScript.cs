@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
+using JetBrains.Annotations;
 
 
 public enum States // used by all logic
@@ -23,21 +24,20 @@ public class PlayerScript : MonoBehaviour
     States state;
 
     public Animator anim;
-    Rigidbody rb;
+    public Rigidbody rb;
     public bool grounded;
 
     public float waiting = 3f;
     public bool deathCooldown = true;
     public bool falling;
     CharacterStats characterStats;
-    CharacterCombat combat;
+    InputAction prepareAction;
     InputAction moveAction;
     InputAction jumpAction;
     InputAction stompAction;
     InputAction tauntAction;
     InputAction menuAction;
     InputAction dodgeAction;
-    InputAction attackAction;
 
     #region Start
 
@@ -52,7 +52,7 @@ public class PlayerScript : MonoBehaviour
         tauntAction = InputSystem.actions.FindAction("Taunt");
         menuAction = InputSystem.actions.FindAction("Menu");
         dodgeAction = InputSystem.actions.FindAction("Dodge");
-        attackAction = InputSystem.actions.FindAction("Attack");
+        prepareAction = InputSystem.actions.FindAction("Prepare");
 
     }
 
@@ -62,10 +62,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attackAction.IsPressed())
-        {
-            combat.Attack();
-        }
+       
 
         if (stompAction.IsPressed())
         {
@@ -130,7 +127,7 @@ public class PlayerScript : MonoBehaviour
         if (moveAction.IsPressed())
         {
             state = States.Walk;
-        }     
+        }
 
     }
 
@@ -148,7 +145,6 @@ public class PlayerScript : MonoBehaviour
         {
             //player has landed on floor
             state = States.Idle;
-
         }
 
         float magnitude = rb.linearVelocity.magnitude;
