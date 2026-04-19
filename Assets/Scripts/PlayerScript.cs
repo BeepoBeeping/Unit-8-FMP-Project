@@ -92,9 +92,10 @@ public class PlayerScript : MonoBehaviour
             PlayerIdle();
         }
 
-        if (state == States.Jump)
+        if (state == States.Jump && grounded == true)
         {
             PlayerJumping();
+            grounded = false;
         }
 
         if (state == States.Walk)
