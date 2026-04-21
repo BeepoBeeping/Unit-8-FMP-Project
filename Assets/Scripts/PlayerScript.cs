@@ -62,12 +62,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
 
-        if (stompAction.IsPressed())
-        {
-            rb.linearVelocity = new Vector3(0, -3f, 0);
-        }
     }
 
     #endregion
@@ -92,7 +87,7 @@ public class PlayerScript : MonoBehaviour
             PlayerIdle();
         }
 
-        if (state == States.Jump && grounded == true)
+        if (state == States.Jump)
         {
             PlayerJumping();
             grounded = false;

@@ -34,7 +34,8 @@ public class EnemyAI : MonoBehaviour
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= attackRange)
             {
-                
+                animator.SetBool("attack", true);
+                animator.SetBool("run", false);
                 timePassed = 0;
             }
         }
@@ -62,7 +63,7 @@ public class EnemyAI : MonoBehaviour
             animator.SetBool("idle", false);
         }
 
-        if (agent.velocity.magnitude <= 0 || agent.speed <= 0)
+        if (agent.velocity.magnitude <= 0.5f || agent.speed <= 0.5f)
         {
             animator.SetBool("run", false);
             animator.SetBool("idle", true);
