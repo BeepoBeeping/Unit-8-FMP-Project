@@ -15,13 +15,14 @@ public enum States // used by all logic
     Idle,
     Walk,
     Jump,
+    DeadWater,
 };
 
 public class PlayerScript : MonoBehaviour
 {
 
 
-    States state;
+    public States state;
 
     public Animator anim;
     public Rigidbody rb;
@@ -96,6 +97,11 @@ public class PlayerScript : MonoBehaviour
         if (state == States.Walk)
         {
             PlayerWalk();
+        }
+
+        if (state == States.DeadWater)
+        {
+            PlayerDeadWater();
         }
 
     }
@@ -210,7 +216,42 @@ public class PlayerScript : MonoBehaviour
 
     #endregion
 
-   
+    #region PlayerDeadWater
+    public void PlayerDeadWater()
+    {
+        if (deathCooldown == true)
+        {
+            anim.SetBool("isJump", false);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("movingJump", false);
+            anim.SetBool("isWalk", false);
+            anim.SetBool("die", true);          
+        }
+
+
+        waiting -= Time.deltaTime;
+        deathCooldown = false;
+
+
+        if (waiting <= 0)
+        {
+            anim.SetBool("die", false);
+            anim.SetBool("isIdle", true);
+            state = States.Idle;
+            SceneManager.LoadScene("Scene1");
+            rb.angularVelocity = Vector3.zero;
+            print("reset transform");
+        }
+
+
+    }
+
+    #endregion
+
+    private void OnTriggerEnter(Collider other)
+    {
+        state = States.DeadWater;
+    }
 
     #region Collision
 

@@ -5,6 +5,7 @@ public class CharacterStats : MonoBehaviour
 {
     [SerializeField]
     private HealthBarUI healthBar;
+    public PlayerScript playerScript;
 
     public void Start()
     {
@@ -42,6 +43,15 @@ public class CharacterStats : MonoBehaviour
         if (col.gameObject.tag == "Danger" || col.gameObject.tag == "Enemy")
         {
             TakeDamage(20);
+        }
+
+        if (col.gameObject.tag == "Floor")
+        {
+            playerScript.grounded = true;
+        }
+        else
+        {
+            playerScript.grounded = false;
         }
     }
 
