@@ -29,7 +29,9 @@ public class PlayerScript : MonoBehaviour
     public bool grounded;
 
     public float waiting = 3f;
+    public float waitingJ = 1f;
     public bool deathCooldown = true;
+    public bool jumpCooldown = true;
     public bool falling;
     CharacterStats characterStats;
     InputAction prepareAction;
@@ -74,7 +76,7 @@ public class PlayerScript : MonoBehaviour
         DoLogic();
 
 
-        grounded = false;
+        
     }
 
     #endregion
@@ -91,7 +93,6 @@ public class PlayerScript : MonoBehaviour
         if (state == States.Jump)
         {
             PlayerJumping();
-            grounded = false;
         }
 
         if (state == States.Walk)
@@ -116,12 +117,23 @@ public class PlayerScript : MonoBehaviour
         anim.SetBool("isJump", false);
         anim.SetBool("movingJump", false);
 
-        if (jumpAction.IsPressed())
+        if (jumpCooldown == true && jumpAction.IsPressed())
         {
             // simulate jump
             anim.SetBool("isJump", true);
             state = States.Jump;
             rb.linearVelocity = new Vector3(0, 4f, 0);
+
+
+            waitingJ -= Time.deltaTime;
+            jumpCooldown = false;
+
+            if (waitingJ <= 0)
+            {
+                jumpCooldown = true;
+                print("jump ready");
+            }
+
         }
 
       
@@ -138,37 +150,50 @@ public class PlayerScript : MonoBehaviour
     #region Player Jump
     void PlayerJumping()
     {
-        anim.SetBool("isIdle", false);
-        anim.SetBool("isWalk", false);
-        Vector3 vel;
 
-        // player is jumping, check for hitting the ground
-        if (grounded == true)
+        if (jumpCooldown == true)
         {
-            //player has landed on floor
-            state = States.Idle;
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isWalk", false);
+            Vector3 vel;
+
+            // player is jumping, check for hitting the ground
+            if (grounded == true)
+            {
+                //player has landed on floor
+                state = States.Idle;
+            }
+
+            float magnitude = rb.linearVelocity.magnitude;
+
+            if (moveAction.IsPressed())
+            {
+                vel = transform.forward * 5f;
+            }
+            else
+            {
+                vel = transform.forward * 0f;
+            }
+
+
+
+
+
+            rb.linearVelocity = new Vector3(vel.x, rb.linearVelocity.y, vel.z);
+
+            if (magnitude <= 0.5f)
+            {
+                state = States.Idle;
+            }
         }
 
-        float magnitude = rb.linearVelocity.magnitude;
+        waitingJ -= Time.deltaTime;
+        jumpCooldown = false;
 
-        if (moveAction.IsPressed())
+        if (waitingJ >= 1)
         {
-            vel = transform.forward * 5f;
-        }
-        else
-        {
-            vel = transform.forward * 0f;
-        }
-
-       
-
-
-
-        rb.linearVelocity = new Vector3(vel.x, rb.linearVelocity.y, vel.z);
-
-        if (magnitude <= 0.5f)
-        {
-            state = States.Idle;
+            jumpCooldown = true;
+            print("jump ready");
         }
     }
 
@@ -177,6 +202,8 @@ public class PlayerScript : MonoBehaviour
     #region Player Walk
     void PlayerWalk()
     {
+
+
         Vector3 vel;
 
         //magnitude = the player's speed
@@ -196,11 +223,20 @@ public class PlayerScript : MonoBehaviour
             vel = transform.forward * 0f;
         }
 
-        if (jumpAction.IsPressed())
+        if (jumpCooldown == true && jumpAction.IsPressed())
         {
             anim.SetBool("movingJump", true);
             state = States.Jump;
             rb.linearVelocity = new Vector3(0, 4.5f, 0);
+
+            waitingJ -= Time.deltaTime;
+            jumpCooldown = false;
+
+            if (waitingJ <= 0)
+            {
+                jumpCooldown = true;
+                print("jump ready");
+            }
         }
 
       
@@ -261,7 +297,17 @@ public class PlayerScript : MonoBehaviour
         {
             grounded = true;
             print("landed!");
-        }    
+            waitingJ = 1f;
+        }
+    }
+
+    void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.tag == "Floor")
+        {
+            grounded = false;
+            print("landed!");
+        }
     }
 
 

@@ -34,6 +34,9 @@ public class EnemyAI : MonoBehaviour
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= attackRange)
             {
+                print("RAHHHH");
+
+                animator.SetBool("idle", false);
                 animator.SetBool("attack", true);
                 animator.SetBool("run", false);
                 timePassed = 0;
@@ -68,6 +71,8 @@ public class EnemyAI : MonoBehaviour
             animator.SetBool("run", false);
             animator.SetBool("idle", true);
         }
+
+       // print(agent.velocity.magnitude);
     }
 
     public void TakeDamage(float damageAmount)
