@@ -237,7 +237,7 @@ public class PlayerScript : MonoBehaviour
             anim.SetBool("die", false);
             anim.SetBool("isIdle", true);
             state = States.Idle;
-            SceneManager.LoadScene("Scene1");
+            SceneManager.LoadScene("Level1");
             rb.angularVelocity = Vector3.zero;
             print("reset transform");
         }
@@ -247,10 +247,21 @@ public class PlayerScript : MonoBehaviour
 
     #endregion
 
+    #region Trigger
     private void OnTriggerEnter(Collider other)
     {
-        state = States.DeadWater;
+        if (other.gameObject.tag == "Water")
+        {
+            state = States.DeadWater;
+        }
+
+        if (other.gameObject.tag == "Win")
+        {
+            SceneManager.LoadScene("WinScreen");
+        }
     }
+
+    #endregion
 
     #region Collision
 
@@ -261,6 +272,7 @@ public class PlayerScript : MonoBehaviour
             grounded = true;
             print("landed!");
         }
+
     }
 
     void OnCollisionExit(Collision col)
