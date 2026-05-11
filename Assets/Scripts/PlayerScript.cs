@@ -148,8 +148,9 @@ public class PlayerScript : MonoBehaviour
 
             float magnitude = rb.linearVelocity.magnitude;
 
-            if (moveAction.IsPressed())
+            if (grounded == false && moveAction.IsPressed())
             {
+                anim.SetBool("isWalk", false);
                 vel = transform.forward * 5f;
             }
             else

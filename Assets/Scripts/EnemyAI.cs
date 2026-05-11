@@ -60,13 +60,13 @@ public class EnemyAI : MonoBehaviour
 
     public void Animate()
     {
-        if (agent.velocity.magnitude > 0)
+        if (agent.velocity.magnitude > 0.5)
         {
             animator.SetBool("run", true);
             animator.SetBool("idle", false);
         }
 
-        if (agent.velocity.magnitude <= 0.5f || agent.speed <= 0.5f)
+        if (agent.velocity.magnitude <= 0.5f)
         {
             animator.SetBool("run", false);
             animator.SetBool("idle", true);
