@@ -1,12 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Animations;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
-using JetBrains.Annotations;
 
 
 public enum States // used by all logic
