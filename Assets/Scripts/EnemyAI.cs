@@ -28,17 +28,11 @@ public class EnemyAI : MonoBehaviour
     {
         animator.SetFloat("speed", agent.velocity.magnitude / agent.speed);
 
-        Animate();
-
         if (timePassed >= attackCD)
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= attackRange)
             {
-                print("RAHHHH");
-
-                animator.SetBool("idle", false);
-                animator.SetBool("attack", true);
-                animator.SetBool("run", false);
+                animator.SetTrigger("attack");
                 timePassed = 0;
             }
         }
@@ -58,22 +52,6 @@ public class EnemyAI : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void Animate()
-    {
-        if (agent.velocity.magnitude > 0.5)
-        {
-            animator.SetBool("run", true);
-            animator.SetBool("idle", false);
-        }
-
-        if (agent.velocity.magnitude <= 0.5f)
-        {
-            animator.SetBool("run", false);
-            animator.SetBool("idle", true);
-        }
-
-       // print(agent.velocity.magnitude);
-    }
 
     public void TakeDamage(float damageAmount)
     {

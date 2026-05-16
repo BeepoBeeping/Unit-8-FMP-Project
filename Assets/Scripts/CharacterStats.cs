@@ -57,7 +57,7 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void Die()
     {
-        SceneManager.LoadScene("Scene1");
+        SceneManager.LoadScene("Level1");
         Debug.Log(transform.name + " died.");
     }
 }
