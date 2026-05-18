@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Win
   - Water
+  - FallTrig
   layers:
   - Default
   - TransparentFX

@@ -59,7 +59,20 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (falling == true)
+        {
+            anim.SetBool("isFalling", true);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isWalk", false);
+            anim.SetBool("isDance", false);
+            anim.SetBool("isJump", false);
+            rb.linearVelocity = new Vector3(0, -10f, 0);
+        }
 
+        if (falling == false)
+        {
+            anim.SetBool("isFalling", false);
+        }
     }
 
     #endregion
@@ -214,6 +227,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (deathCooldown == true)
         {
+            anim.SetBool("isFalling", false);
             anim.SetBool("isJump", false);
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
@@ -245,12 +259,25 @@ public class PlayerScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Water")
         {
+            falling = false;
+            anim.SetBool("isFalling", false);
             state = States.DeadWater;
         }
 
         if (other.gameObject.tag == "Win")
         {
             SceneManager.LoadScene("WinScreen");
+        }
+
+        if (other.gameObject.tag == "FallTrig")
+        {
+            falling = true;
+            anim.SetBool("isFalling", true);
+            anim.SetBool("isWalk", false);
+            anim.SetBool("isJump", false);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("isDance", false);
+            anim.SetBool("die", false);
         }
     }
 
@@ -262,10 +289,10 @@ public class PlayerScript : MonoBehaviour
     {
         if (col.gameObject.tag == "Floor")
         {
+            falling = false;
             grounded = true;
             print("landed!");
         }
-
     }
 
     void OnCollisionExit(Collision col)
