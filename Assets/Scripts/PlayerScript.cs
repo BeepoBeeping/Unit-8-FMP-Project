@@ -109,7 +109,6 @@ public class PlayerScript : MonoBehaviour
         anim.SetBool("isIdle", true);
         anim.SetBool("isWalk", false);
         anim.SetBool("isJump", false);
-        anim.SetBool("movingJump", false);
 
         if (grounded && jumpAction.IsPressed())
         {
@@ -192,7 +191,7 @@ public class PlayerScript : MonoBehaviour
 
         if (grounded && jumpAction.IsPressed())
         {
-            anim.SetBool("movingJump", true);
+            anim.SetTrigger("movingJump");
             state = States.Jump;
             rb.linearVelocity = new Vector3(0, 4.5f, 0);
         }
@@ -217,7 +216,6 @@ public class PlayerScript : MonoBehaviour
         {
             anim.SetBool("isJump", false);
             anim.SetBool("isIdle", false);
-            anim.SetBool("movingJump", false);
             anim.SetBool("isWalk", false);
             anim.SetBool("die", true);          
         }
