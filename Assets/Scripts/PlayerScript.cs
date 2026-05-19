@@ -125,6 +125,7 @@ public class PlayerScript : MonoBehaviour
 
         if (grounded && jumpAction.IsPressed())
         {
+            AudioManager.instance.PlayClip("JumpSFX");
             // simulate jump
             anim.SetBool("isJump", true);
             state = States.Jump;
@@ -145,7 +146,7 @@ public class PlayerScript : MonoBehaviour
 
     #region Player Jump
     void PlayerJumping()
-    { 
+    {
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
             
@@ -204,7 +205,9 @@ public class PlayerScript : MonoBehaviour
 
         if (grounded && jumpAction.IsPressed())
         {
-            anim.SetTrigger("movingJump");
+            AudioManager.instance.PlayClip("JumpSFX");
+            anim.SetBool("movingJump", true);
+            anim.SetBool("isWalk", false);
             state = States.Jump;
             rb.linearVelocity = new Vector3(0, 4.5f, 0);
         }
@@ -228,6 +231,7 @@ public class PlayerScript : MonoBehaviour
         if (deathCooldown == true)
         {
             anim.SetBool("isFalling", false);
+            anim.SetBool("movingJump", false);
             anim.SetBool("isJump", false);
             anim.SetBool("isIdle", false);
             anim.SetBool("isWalk", false);
@@ -273,10 +277,10 @@ public class PlayerScript : MonoBehaviour
         {
             falling = true;
             anim.SetBool("isFalling", true);
+            anim.SetBool("movingJump", false);
             anim.SetBool("isWalk", false);
             anim.SetBool("isJump", false);
             anim.SetBool("isIdle", false);
-            anim.SetBool("isDance", false);
             anim.SetBool("die", false);
         }
     }
@@ -290,6 +294,9 @@ public class PlayerScript : MonoBehaviour
         if (col.gameObject.tag == "Floor")
         {
             falling = false;
+            anim.SetBool("isJump", false);
+            anim.SetBool("isFalling", false);
+            anim.SetBool("movingJump", false);
             grounded = true;
             print("landed!");
         }
