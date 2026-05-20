@@ -315,7 +315,7 @@ public class PlayerScript : MonoBehaviour
 
     #endregion
 
-    //Output debug info to canvas
+    /* Output debug info to canvas
     private void OnGUI()
     {
         float mag = rb.linearVelocity.magnitude;
@@ -331,4 +331,5 @@ public class PlayerScript : MonoBehaviour
         GUILayout.Label($"<size=16>{text}</size>");
         GUILayout.EndArea();
     }
+        */
 }
